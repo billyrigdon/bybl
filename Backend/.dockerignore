@@ -1,0 +1,11 @@
+# Binaries
+main
+
+# OS files
+*.DS_Store
+
+# Go dependencies
+vendor/
+
+# Others
+.git

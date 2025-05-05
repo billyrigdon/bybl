@@ -1,0 +1,2 @@
+/home/billy/Code/bybl/Frontend/android/app/.cxx/RelWithDebInfo/4b283822/x86_64/CMakeFiles/edit_cache.dir
+/home/billy/Code/bybl/Frontend/android/app/.cxx/RelWithDebInfo/4b283822/x86_64/CMakeFiles/rebuild_cache.dir

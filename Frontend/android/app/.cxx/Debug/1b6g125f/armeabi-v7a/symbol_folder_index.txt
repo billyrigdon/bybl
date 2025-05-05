@@ -1,0 +1,1 @@
+/home/billy/Code/TheWord/Frontend/build/app/intermediates/cxx/Debug/1b6g125f/obj/armeabi-v7a

@@ -1,0 +1,89 @@
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+generated_plugin_registrant.dart
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Android
+android/.gradle/
+android/captures/
+android/app/debug/
+android/app/release/
+android/local.properties
+
+# iOS
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/App.framework
+ios/.symlinks/
+ios/Pods/
+ios/.flutter-plugins
+ios/Runner.xcworkspace/
+ios/DerivedData/
+ios/.dart_tool/
+
+# macOS
+macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Pods/
+macos/.symlinks/
+macos/.flutter-plugins
+macos/Flutter/ephemeral/
+macos/Flutter/App.framework
+macos/Flutter/Flutter.framework
+macos/build/
+
+# Windows
+windows/flutter/ephemeral/
+windows/build/
+
+# Linux
+linux/flutter/ephemeral/
+linux/build/
+
+# Web
+web/.dart_tool/
+web/build/
+
+# Misc
+*.log
+*.tmp
+*.swp
+.DS_Store
+.env
+# Firebase Dart config
+firebase_options.dart
+
+# Android Firebase config
+google-services.json
+
+# iOS Firebase config
+GoogleService-Info.plist
+
+# Flutter build output
+build/
+
+# .env files (if you use dotenv for secrets)
+.env
+.env.*
+
+# Firebase emulators/local configs (if used)
+firebase-debug.log
+.firebaserc
+.firebase/
+
+# Crashlytics (optional)
+ios/Pods/
+android/.gradle/

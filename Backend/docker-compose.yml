@@ -1,0 +1,89 @@
+# version: '3.8'
+
+# services:
+#   db:
+#     image: postgres:13
+#     container_name: db
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: yourpassword
+#       POSTGRES_DB: social_media_app
+#     ports:
+#       - "5432:5432"
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U postgres"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     networks:
+#       - app-network
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+
+#   api:
+#     build: .
+#     container_name: api
+#     environment:
+#       DB_HOST: db
+#       DB_USER: postgres
+#       DB_PASSWORD: yourpassword
+#       DB_NAME: social_media_app
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     networks:
+#       - app-network
+#     ports:
+#       - "8080:8080"
+
+# networks:
+#   app-network:
+#     driver: bridge
+
+# volumes:
+#   db-data:
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: social_media_app
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: api
+    env_file:
+      - .env   # <---- automatically load variables
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: yourpassword
+      DB_NAME: social_media_app
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    ports:
+      - "8080:8080"
+
+networks:
+  app-network:
+
+volumes:
+  db-data:

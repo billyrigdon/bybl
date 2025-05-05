@@ -1,0 +1,2 @@
+/home/billy/Code/TheWord/Frontend/android/app/.cxx/Debug/4x73gd5q/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/home/billy/Code/TheWord/Frontend/android/app/.cxx/Debug/4x73gd5q/armeabi-v7a/CMakeFiles/edit_cache.dir
