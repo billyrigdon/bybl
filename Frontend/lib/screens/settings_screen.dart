@@ -39,8 +39,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _filteredTranslations =
         _groupAndSortTranslations(bibleProvider.translations);
 
-    _searchController
-        .addListener(() => _filterTranslations(_searchController.text));
+    _searchController.addListener(() {
+      if (_debounce?.isActive ?? false) _debounce!.cancel();
+      _debounce = Timer(const Duration(milliseconds: 150), () {
+        if (mounted) {
+          _filterTranslations(_searchController.text);
+        }
+      });
+    });
   }
 
   @override
@@ -59,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       // Simple fuzzy + substring filter
       final all = bibleProvider.translations;
       if (query.isEmpty) {
-        _filteredTranslations = all;
+        _filteredTranslations = _groupAndSortTranslations(all);
         return;
       }
 
@@ -68,16 +74,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final scored = all.map((t) {
         final display = _buildDisplayName(t).toLowerCase();
         final score = StringSimilarity.compareTwoStrings(display, lowerQuery);
-        return {...t, '_score': score};
+        final map = Map<String, dynamic>.from(t); // 👈 cast it properly
+        map['_score'] = score;
+        return map;
       }).where((t) {
-        // quick substring boost
         final disp = _buildDisplayName(t).toLowerCase();
         return disp.contains(lowerQuery) || t['_score'] > 0.2;
       }).toList();
 
       scored.sort(
           (a, b) => (b['_score'] as double).compareTo(a['_score'] as double));
-      _filteredTranslations = scored;
 
       // ensure current translation stays visible
       final currentId = settingsProvider.currentTranslationId;
@@ -93,26 +99,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   List<Map<String, dynamic>> _groupAndSortTranslations(
       List<dynamic> translations) {
-    // Group by language
     List<Map<String, dynamic>> english = [];
     Map<String, List<Map<String, dynamic>>> others = {};
 
     for (var t in translations) {
-      final lang = (t['language']?['name'] ?? '').toString();
-      if (lang.toLowerCase() == 'english') {
+      final langName = (t['language']?['name'] ?? '').toString().toLowerCase();
+      final name = (t['name'] ?? '').toString().toLowerCase();
+
+      final isEnglish = langName == 'english' ||
+          langName.isEmpty ||
+          t['language']?['id'] == 'eng' ||
+          ['esv', 'niv', 'kjv', 'nkjv', 'nlt', 'nasb', 'net', 'csb']
+              .any((key) => name.contains(key));
+
+      if (isEnglish) {
         english.add(t);
       } else {
+        final lang = t['language']?['name'] ?? 'Unknown';
         others.putIfAbsent(lang, () => []).add(t);
       }
     }
 
-    // Sort each group
     english.sort((a, b) => a['name'].compareTo(b['name']));
     for (var group in others.values) {
       group.sort((a, b) => a['name'].compareTo(b['name']));
     }
 
-    // Combine with English at top, then others sorted by language
     final sortedLanguages = others.keys.toList()..sort();
     final result = [...english];
     for (var lang in sortedLanguages) {
