@@ -136,7 +136,7 @@ class ReaderScreenState extends State<ReaderScreen> {
         } else {
           final verses = _extractScriptureApiVerses(rawContent);
 
-          if (translationId.toUpperCase() == 'ESV') {
+          if (translationId.toUpperCase() == 'bba9f40183526463-01') {
             for (final v in verses) {
               final parts = (v['id'] as String).split('.');
               v['id'] = parts.isNotEmpty ? parts.last : v['id'];
@@ -159,7 +159,7 @@ class ReaderScreenState extends State<ReaderScreen> {
 
   _fetchChapterVersesFromBackend(String chapterId, String translationId) async {
     final reference = chapterId.replaceAll('.', ' ');
-    final isEsv = translationId.toUpperCase() == 'ESV';
+    final isEsv = translationId.toUpperCase() == 'bba9f40183526463-01';
     final uri = Uri.parse(
       isEsv
           ? 'https://api.bybl.dev/api/passage/$translationId?q=$reference'

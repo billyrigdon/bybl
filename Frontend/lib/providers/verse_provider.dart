@@ -226,13 +226,32 @@ class VerseProvider with ChangeNotifier {
     }
   }
 
+  // void _addSavedVersesWithoutDuplicates(List<dynamic> newVerses) {
+  //   final existingIds = savedVerses.map((v) => v['UserVerseID']).toSet();
+
+  //   for (var verse in newVerses) {
+  //     if (!existingIds.contains(verse['UserVerseID'])) {
+  //       savedVerses.add({
+  //         'UserVerseID': verse['user_verse_id'],
+  //         'VerseID': verse['verse_id'],
+  //         'Content': verse['content'],
+  //         'Note': verse['note'],
+  //         'is_published': verse['is_published'],
+  //         'likes_count': verse['likes_count'],
+  //         'comment_count': verse['comment_count'],
+  //       });
+  //     }
+  //   }
+  // }
+
   void _addSavedVersesWithoutDuplicates(List<dynamic> newVerses) {
     final existingIds = savedVerses.map((v) => v['UserVerseID']).toSet();
 
     for (var verse in newVerses) {
-      if (!existingIds.contains(verse['UserVerseID'])) {
+      final newId = verse['user_verse_id'];
+      if (!existingIds.contains(newId)) {
         savedVerses.add({
-          'UserVerseID': verse['user_verse_id'],
+          'UserVerseID': newId,
           'VerseID': verse['verse_id'],
           'Content': verse['content'],
           'Note': verse['note'],

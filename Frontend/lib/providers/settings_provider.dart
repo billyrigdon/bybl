@@ -150,8 +150,15 @@ class SettingsProvider with ChangeNotifier {
     _currentThemeMode =
         settings['dark_mode'] ? ThemeMode.dark : ThemeMode.light;
     _isPublicProfile = settings['public_profile'];
-    _currentTranslationId = settings["translation_id"];
-    _currentTranslationName = settings["translation_name"];
+    _currentTranslationId =
+        settings["translation_id"].toString().toLowerCase() == 'esv'
+            ? 'bba9f40183526463-01'
+            : settings['translation_id'];
+    _currentTranslationName =
+        settings["translation_name"].toString().toLowerCase() ==
+                'english standard version'
+            ? 'Berean Standard Version'
+            : settings['translation_name'];
 
     notifyListeners();
   }
@@ -164,18 +171,44 @@ class SettingsProvider with ChangeNotifier {
       Set<String> seenNames = {};
       _translations = [];
 
+      List<dynamic> cleanedTranslations = [];
+
       for (dynamic translation in fetchedTranslations) {
         String name = (translation["name"] as String).toLowerCase();
         if (!seenNames.contains(name)) {
           seenNames.add(name);
-          fetchedTranslations.add(translation);
+          cleanedTranslations.add(translation);
         }
       }
-      _translations = fetchedTranslations;
-      _translations.add({
-        'id': 'ESV',
-        'name': 'English Standard Version',
+
+// Add ESV and NIV manually
+      cleanedTranslations.add({
+        'id': 'bba9f40183526463-01',
+        'name': 'Berean Standard Version',
       });
+      cleanedTranslations.add({
+        'id': 'NIV',
+        'name': 'New International Version',
+      });
+
+      _translations = cleanedTranslations;
+
+      // for (dynamic translation in fetchedTranslations) {
+      //   String name = (translation["name"] as String).toLowerCase();
+      //   if (!seenNames.contains(name)) {
+      //     seenNames.add(name);
+      //     fetchedTranslations.add(translation);
+      //   }
+      // }
+      // _translations = fetchedTranslations;
+      // _translations.add({
+      //   'id': 'bba9f40183526463-01',
+      //   'name': 'Berean Standard Version',
+      // });
+      // _translations.add({
+      //   'id': 'NIV',
+      //   'name': 'New International Version',
+      // });
     }
     notifyListeners();
   }

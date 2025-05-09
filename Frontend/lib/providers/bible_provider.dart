@@ -39,12 +39,18 @@ class BibleProvider with ChangeNotifier {
         }
       }
 
+      if (!seenNames.contains('New International Version')) {
+        _translations.add({
+          'id': 'NIV',
+          'name': 'New International Version',
+        });
+      }
+
       notifyListeners();
     } else {
       throw Exception('Failed to load translations');
     }
   }
-
 
   Future<void> fetchBooks(String translationId) async {
     isLoadingBooks = true;
@@ -53,7 +59,7 @@ class BibleProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final bibleId = (translationId.toUpperCase() == 'ESV')
+      final bibleId = (translationId.toUpperCase() == 'bba9f40183526463-01')
           ? bereanBibleId
           : translationId;
 
@@ -81,7 +87,9 @@ class BibleProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final bibleId = (translationId == 'ESV') ? bereanBibleId : translationId;
+      final bibleId = (translationId == 'bba9f40183526463-01')
+          ? bereanBibleId
+          : translationId;
 
       final response = await http.get(
         Uri.parse('$_baseUrl/bible/$bibleId/books/$bookId/chapters'),

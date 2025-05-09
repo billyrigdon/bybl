@@ -119,8 +119,8 @@ class SettingsService {
     String? translationName = prefs.getString('translationName');
 
     return {
-      'id': translationId ?? 'ESV',
-      'name': translationName ?? 'English Standard Version',
+      'id': translationId ?? 'bba9f40183526463-01',
+      'name': translationName ?? 'Berean Standard Version',
     };
   }
 

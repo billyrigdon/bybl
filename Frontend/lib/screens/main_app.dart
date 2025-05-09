@@ -55,8 +55,8 @@ class _MainAppScreenState extends State<MainAppScreen> {
     });
     var settings = Provider.of<SettingsProvider>(context, listen: false);
     await settingsProvider.loadSettings();
-    await bibleProvider
-        .fetchBooks(settingsProvider.currentTranslationId ?? 'ESV');
+    await bibleProvider.fetchBooks(
+        settingsProvider.currentTranslationId ?? 'bba9f40183526463-01');
     if (!settingsProvider.isLoggedIn) {
       setState(() {
         isInitRunning = false;
@@ -146,7 +146,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
         _timer?.cancel();
         return;
       }
- 
+
       NotificationProvider notificationProvider =
           Provider.of<NotificationProvider>(context, listen: false);
       await notificationProvider.fetchAllNotifications();
@@ -156,6 +156,318 @@ class _MainAppScreenState extends State<MainAppScreen> {
       });
     });
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   friendProvider = Provider.of<FriendProvider>(context, listen: false);
+  //   verseProvider = Provider.of<VerseProvider>(context, listen: false);
+  //   churchProvider = Provider.of<ChurchProvider>(context);
+  //   settingsProvider = Provider.of<SettingsProvider>(context);
+  //   bibleProvider = Provider.of<BibleProvider>(context);
+  //   if (settingsProvider.isLoggedIn &&
+  //       isInited == false &&
+  //       isInitRunning == false) {
+  //     init();
+  //   }
+
+  //   // Get current color from settings
+  //   MaterialColor? currentColor = settingsProvider.currentColor;
+  //   Color? fontColor = settingsProvider.currentThemeMode == ThemeMode.dark
+  //       ? Colors.white
+  //       : Colors.black;
+  //   if (currentColor != null) {
+  //     fontColor = settingsProvider.getFontColor(currentColor);
+  //   }
+
+  //   // Define the screens associated with each index
+  //   // Define the screens associated with each index
+  //   final List<Widget> _screens = [
+  //     const ChurchScreen(), // 0 – Churches
+  //     LoadingWrapper<VerseProvider>(
+  //       isLoading: (provider) => provider.isIniting,
+  //       child: PublicVersesScreen(),
+  //     ), // 1 – Explore
+  //     const BookListScreen(), // 2 – Bible
+  //     ChatScreen(), // 3 – Ask Archie
+  //     NotificationScreen(), // 4 – Notifications
+  //   ];
+
+  //   if (settingsProvider.loading ||
+  //       (Provider.of<BibleProvider>(context).isLoadingBooks)) {
+  //     return const Scaffold(
+  //       body: Center(child: CircularProgressIndicator()),
+  //     );
+  //   }
+
+  //   return WillPopScope(
+  //     onWillPop: () async {
+  //       return false;
+  //     },
+  //     child: Scaffold(
+  //       appBar: PreferredSize(
+  //         preferredSize: Size.fromHeight(60),
+  //         child: AppBar(
+  //           backgroundColor: currentColor,
+  //           automaticallyImplyLeading: false,
+  //           flexibleSpace: SafeArea(
+  //             child: Container(
+  //               child: Center(
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Container(
+  //                       child: FixedAssetIcon(
+  //                         'assets/icon/cross_nav.png',
+  //                         color: fontColor,
+  //                       ),
+  //                     ),
+  //                     if (_currentIndex == 2)
+  //                       Expanded(
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.only(left: 14.0),
+  //                           child: SizedBox(
+  //                             height: 36,
+  //                             child: DynamicSearchBar(
+  //                               searchType: SearchType
+  //                                   .BibleBooks, // Choose the appropriate search type
+  //                               fontColor: fontColor,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     if (_currentIndex == 1)
+  //                       Expanded(
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.only(left: 14.0),
+  //                           child: SizedBox(
+  //                             height: 36,
+  //                             child: DynamicSearchBar(
+  //                               searchType: SearchType
+  //                                   .PublicVerses, // Choose the appropriate search type
+  //                               fontColor: fontColor,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     if (_currentIndex == 4)
+  //                       Expanded(
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.only(left: 14.0),
+  //                           child: Center(
+  //                             child: SizedBox(
+  //                               height: 36,
+  //                               child: Center(
+  //                                 child: Text(
+  //                                   'Notifications',
+  //                                   style: TextStyle(
+  //                                       color: settingsProvider.fontColor,
+  //                                       fontSize: 20,
+  //                                       fontWeight: FontWeight.bold),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     if (_currentIndex == 3)
+  //                       Expanded(
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.only(left: 14.0),
+  //                           child: Center(
+  //                             child: SizedBox(
+  //                               height: 36,
+  //                               child: Center(
+  //                                 child: Text(
+  //                                   'Ask Archie',
+  //                                   style: TextStyle(
+  //                                       color: settingsProvider.fontColor,
+  //                                       fontSize: 20,
+  //                                       fontWeight: FontWeight.bold),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     if (_currentIndex == 0)
+  //                       Expanded(
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.only(left: 14.0),
+  //                           child: Center(
+  //                             child: SizedBox(
+  //                               height: 36,
+  //                               child: Center(
+  //                                 child: Text(
+  //                                   'Churches',
+  //                                   style: TextStyle(
+  //                                       color: settingsProvider.fontColor,
+  //                                       fontSize: 20,
+  //                                       fontWeight: FontWeight.bold),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     // Spacer(), // Add another spacer for even spacing
+  //                     Row(
+  //                       children: [
+  //                         if (!settingsProvider.isLoggedIn)
+  //                           IconButton(
+  //                             color: fontColor,
+  //                             icon: const Icon(Icons.login),
+  //                             onPressed: () {
+  //                               Navigator.push(
+  //                                 context,
+  //                                 MaterialPageRoute(
+  //                                     builder: (context) => LoginScreen()),
+  //                               );
+  //                             },
+  //                           ),
+  //                         Padding(
+  //                           padding: const EdgeInsets.all(8.0),
+  //                           child: Row(
+  //                             mainAxisAlignment: MainAxisAlignment
+  //                                 .center, // Aligns buttons centrally
+  //                             children: [
+  //                               if (settingsProvider.isLoggedIn)
+  //                                 SizedBox(
+  //                                   width:
+  //                                       30, // Set a small width for the button container
+  //                                   height:
+  //                                       40, // Optional: Set height if needed
+  //                                   child: IconButton(
+  //                                     padding: EdgeInsets.zero,
+  //                                     constraints:
+  //                                         BoxConstraints(), // Removes default constraints
+  //                                     color: fontColor,
+  //                                     icon: const Icon(Icons.person),
+  //                                     onPressed: () {
+  //                                       Navigator.push(
+  //                                         context,
+  //                                         MaterialPageRoute(
+  //                                             builder: (context) =>
+  //                                                 ProfileScreen()),
+  //                                       );
+  //                                     },
+  //                                   ),
+  //                                 ),
+  //                               SizedBox(
+  //                                   width:
+  //                                       4), // Very small spacing between buttons
+  //                               SizedBox(
+  //                                 width:
+  //                                     40, // Set a small width for the button container
+  //                                 height: 40, // Optional: Set height if needed
+  //                                 child: IconButton(
+  //                                   padding: EdgeInsets.zero,
+  //                                   constraints:
+  //                                       BoxConstraints(), // Removes default constraints
+  //                                   color: fontColor,
+  //                                   icon: const Icon(Icons.settings),
+  //                                   onPressed: () {
+  //                                     Navigator.push(
+  //                                       context,
+  //                                       MaterialPageRoute(
+  //                                           builder: (context) =>
+  //                                               SettingsScreen()),
+  //                                     );
+  //                                   },
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       body: settingsProvider.isLoggedIn
+  //           ? IndexedStack(
+  //               index: _currentIndex,
+  //               children: _screens,
+  //             )
+  //           : BookListScreen(), // Display only the BookListScreen if not logged in
+  //       bottomNavigationBar: settingsProvider.isLoggedIn
+  //           ? Theme(
+  //               data: ThemeData(
+  //                 canvasColor: currentColor, // Set canvasColor to currentColor
+  //               ),
+  //               child: BottomNavigationBar(
+  //                 type: BottomNavigationBarType.fixed,
+  //                 currentIndex: _currentIndex,
+  //                 items: [
+  //                   BottomNavigationBarItem(
+  //                     // 0 – Churches
+  //                     icon: Icon(Icons.church, color: fontColor),
+  //                     label: 'Churches',
+  //                   ),
+  //                   BottomNavigationBarItem(
+  //                     // 1 – Explore
+  //                     icon: Icon(Icons.explore, color: fontColor),
+  //                     label: 'Explore',
+  //                   ),
+  //                   BottomNavigationBarItem(
+  //                     icon: ImageIcon(
+  //                       const AssetImage('assets/icon/app_icon.png'),
+  //                       size: 36,
+  //                     ),
+  //                     label: 'Bible',
+  //                   ),
+  //                   BottomNavigationBarItem(
+  //                     // 3 – Ask Archie
+  //                     icon: Icon(Icons.chat, color: fontColor),
+  //                     label: 'Ask Archie',
+  //                   ),
+  //                   BottomNavigationBarItem(
+  //                     // 4 – Notifications
+  //                     icon: NotificationIcon(fontColor: fontColor),
+  //                     label: 'Notifications',
+  //                   ),
+  //                 ],
+  //                 selectedItemColor: _getContrastingTextColor(
+  //                     currentColor ?? createMaterialColor(Colors.black)),
+  //                 unselectedItemColor: _getContrastingTextColor(
+  //                         currentColor ?? createMaterialColor(Colors.black))
+  //                     .withOpacity(0.6),
+  //                 showUnselectedLabels: true,
+  //                 onTap: (index) async {
+  //                   if (index == 0) {
+  //                     // Church tab
+  //                     // if (churchProvider.isMember &&
+  //                     //     churchProvider.userChurchId != null) {
+  //                     //   // If user is a member, navigate to their church details
+  //                     //   await churchProvider
+  //                     //       .selectChurch(churchProvider.userChurchId!);
+  //                     //   Navigator.push(
+  //                     //     context,
+  //                     //     MaterialPageRoute(
+  //                     //       builder: (context) => const ChurchDetailScreen(),
+  //                     //     ),
+  //                     //   );
+  //                     // } else {
+  //                     // If not a member, show church list
+  //                     setState(() {
+  //                       _currentIndex = index;
+  //                     });
+  //                     // }
+  //                   } else {
+  //                     setState(() {
+  //                       _currentIndex = index;
+  //                     });
+  //                   }
+  //                 },
+  //               ),
+  //             )
+  //           : null, // No bottom bar if not logged in
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +482,6 @@ class _MainAppScreenState extends State<MainAppScreen> {
       init();
     }
 
-    // Get current color from settings
     MaterialColor? currentColor = settingsProvider.currentColor;
     Color? fontColor = settingsProvider.currentThemeMode == ThemeMode.dark
         ? Colors.white
@@ -179,17 +490,15 @@ class _MainAppScreenState extends State<MainAppScreen> {
       fontColor = settingsProvider.getFontColor(currentColor);
     }
 
-    // Define the screens associated with each index
-    // Define the screens associated with each index
     final List<Widget> _screens = [
-      const ChurchScreen(), // 0 – Churches
+      const ChurchScreen(),
       LoadingWrapper<VerseProvider>(
         isLoading: (provider) => provider.isIniting,
         child: PublicVersesScreen(),
-      ), // 1 – Explore
-      const BookListScreen(), // 2 – Bible
-      ChatScreen(), // 3 – Ask Archie
-      NotificationScreen(), // 4 – Notifications
+      ),
+      const BookListScreen(),
+      ChatScreen(),
+      NotificationScreen(),
     ];
 
     if (settingsProvider.loading ||
@@ -200,215 +509,205 @@ class _MainAppScreenState extends State<MainAppScreen> {
     }
 
     return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+      onWillPop: () async => false,
       child: Scaffold(
+        endDrawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              // DrawerHeader(
+              //   decoration: BoxDecoration(
+              //       // color: currentColor,
+              //       ),
+              // child: Text(
+              //   'bybl',
+              //   style: TextStyle(
+              //     color: fontColor,
+              //     fontSize: 24,
+              //   ),
+              // ),
+              // ),
+              SizedBox(
+                height: 72,
+              ),
+
+              if (settingsProvider.isLoggedIn) ...[
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text('Profile'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => ProfileScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Settings'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => SettingsScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Logout'),
+                  onTap: () {
+                    settingsProvider.logout();
+                    Navigator.pop(context);
+                  },
+                ),
+              ] else ...[
+                ListTile(
+                  leading: Icon(Icons.login),
+                  title: Text('Login'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => LoginScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.app_registration),
+                  title: Text('Register'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => RegistrationScreen()));
+                  },
+                ),
+              ],
+            ],
+          ),
+        ),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: AppBar(
             backgroundColor: currentColor,
             automaticallyImplyLeading: false,
+            leading: SizedBox.shrink(),
             flexibleSpace: SafeArea(
-              child: Container(
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: FixedAssetIcon(
-                          'assets/icon/cross_nav.png',
-                          color: fontColor,
+              child: Builder(
+                builder: (context) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _currentIndex = 2;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: FixedAssetIcon('assets/icon/cross_nav.png',
+                            color: fontColor, size: 48),
+                      ),
+                    ),
+                    if (_currentIndex == 2)
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 0),
+                          child: SizedBox(
+                            height: 36,
+                            child: DynamicSearchBar(
+                              searchType: SearchType.BibleBooks,
+                              fontColor: fontColor,
+                            ),
+                          ),
                         ),
                       ),
-                      if (_currentIndex == 2)
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 14.0),
-                            child: SizedBox(
-                              height: 36,
-                              child: DynamicSearchBar(
-                                searchType: SearchType
-                                    .BibleBooks, // Choose the appropriate search type
-                                fontColor: fontColor,
-                              ),
+                    if (_currentIndex == 1)
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 0),
+                          child: SizedBox(
+                            height: 36,
+                            child: DynamicSearchBar(
+                              searchType: SearchType.PublicVerses,
+                              fontColor: fontColor,
                             ),
                           ),
                         ),
-                      if (_currentIndex == 1)
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 14.0),
-                            child: SizedBox(
-                              height: 36,
-                              child: DynamicSearchBar(
-                                searchType: SearchType
-                                    .PublicVerses, // Choose the appropriate search type
-                                fontColor: fontColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      if (_currentIndex == 4)
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 14.0),
-                            child: Center(
-                              child: SizedBox(
-                                height: 36,
-                                child: Center(
-                                  child: Text(
-                                    'Notifications',
-                                    style: TextStyle(
-                                        color: settingsProvider.fontColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      if (_currentIndex == 3)
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 14.0),
-                            child: Center(
-                              child: SizedBox(
-                                height: 36,
-                                child: Center(
-                                  child: Text(
-                                    'Ask Archie',
-                                    style: TextStyle(
-                                        color: settingsProvider.fontColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      if (_currentIndex == 0)
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 14.0),
-                            child: Center(
-                              child: SizedBox(
-                                height: 36,
-                                child: Center(
-                                  child: Text(
-                                    'Churches',
-                                    style: TextStyle(
-                                        color: settingsProvider.fontColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      // Spacer(), // Add another spacer for even spacing
-                      Row(
-                        children: [
-                          if (!settingsProvider.isLoggedIn)
-                            IconButton(
-                              color: fontColor,
-                              icon: const Icon(Icons.login),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginScreen()),
-                                );
-                              },
-                            ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .center, // Aligns buttons centrally
-                              children: [
-                                if (settingsProvider.isLoggedIn)
-                                  SizedBox(
-                                    width:
-                                        30, // Set a small width for the button container
-                                    height:
-                                        40, // Optional: Set height if needed
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      constraints:
-                                          BoxConstraints(), // Removes default constraints
-                                      color: fontColor,
-                                      icon: const Icon(Icons.person),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfileScreen()),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                SizedBox(
-                                    width:
-                                        4), // Very small spacing between buttons
-                                SizedBox(
-                                  width:
-                                      40, // Set a small width for the button container
-                                  height: 40, // Optional: Set height if needed
-                                  child: IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints:
-                                        BoxConstraints(), // Removes default constraints
-                                    color: fontColor,
-                                    icon: const Icon(Icons.settings),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SettingsScreen()),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
                       ),
-                    ],
-                  ),
+                    if (_currentIndex == 4)
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Notifications',
+                            style: TextStyle(
+                              color: settingsProvider.fontColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (_currentIndex == 3)
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Ask Archie',
+                            style: TextStyle(
+                              color: settingsProvider.fontColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (_currentIndex == 0)
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Churches',
+                            style: TextStyle(
+                              color: settingsProvider.fontColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    SizedBox(
+                      width: 48,
+                      // color: currentColor,
+                      // child: IconButton(
+                      //   color: currentColor,
+                      //   icon: Icon(
+                      //     Icons.menu,
+                      //     color: fontColor,
+                      //     size: 16,
+                      //   ),
+                      //   onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      // ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
         body: settingsProvider.isLoggedIn
-            ? IndexedStack(
-                index: _currentIndex,
-                children: _screens,
-              )
-            : BookListScreen(), // Display only the BookListScreen if not logged in
+            ? IndexedStack(index: _currentIndex, children: _screens)
+            : BookListScreen(),
         bottomNavigationBar: settingsProvider.isLoggedIn
             ? Theme(
                 data: ThemeData(
-                  canvasColor: currentColor, // Set canvasColor to currentColor
+                  canvasColor: currentColor,
                 ),
                 child: BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
                   currentIndex: _currentIndex,
                   items: [
                     BottomNavigationBarItem(
-                      // 0 – Churches
                       icon: Icon(Icons.church, color: fontColor),
                       label: 'Churches',
                     ),
                     BottomNavigationBarItem(
-                      // 1 – Explore
                       icon: Icon(Icons.explore, color: fontColor),
                       label: 'Explore',
                     ),
@@ -420,12 +719,10 @@ class _MainAppScreenState extends State<MainAppScreen> {
                       label: 'Bible',
                     ),
                     BottomNavigationBarItem(
-                      // 3 – Ask Archie
                       icon: Icon(Icons.chat, color: fontColor),
                       label: 'Ask Archie',
                     ),
                     BottomNavigationBarItem(
-                      // 4 – Notifications
                       icon: NotificationIcon(fontColor: fontColor),
                       label: 'Notifications',
                     ),
@@ -436,35 +733,14 @@ class _MainAppScreenState extends State<MainAppScreen> {
                           currentColor ?? createMaterialColor(Colors.black))
                       .withOpacity(0.6),
                   showUnselectedLabels: true,
-                  onTap: (index) async {
-                    if (index == 0) {
-                      // Church tab
-                      // if (churchProvider.isMember &&
-                      //     churchProvider.userChurchId != null) {
-                      //   // If user is a member, navigate to their church details
-                      //   await churchProvider
-                      //       .selectChurch(churchProvider.userChurchId!);
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => const ChurchDetailScreen(),
-                      //     ),
-                      //   );
-                      // } else {
-                      // If not a member, show church list
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                      // }
-                    } else {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    }
+                  onTap: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
                   },
                 ),
               )
-            : null, // No bottom bar if not logged in
+            : null,
       ),
     );
   }

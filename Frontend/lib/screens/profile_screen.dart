@@ -414,7 +414,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   (verseProvider.hasMoreSavedVerses ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == verseProvider.savedVerses.length) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Container();
                 }
                 final verse = verseProvider.savedVerses[index];
                 int userVerseId = verse['UserVerseID'];

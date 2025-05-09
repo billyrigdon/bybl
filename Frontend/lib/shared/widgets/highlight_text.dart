@@ -47,7 +47,7 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
     String translationId,
   ) async {
     String savedVerseId = verseId;
-    if (translationId == 'ESV') {
+    if (translationId == 'bba9f40183526463-01') {
       savedVerseId = "$chapter:$verseId";
     }
 
@@ -70,7 +70,7 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
     if (selectedVerseId == null) return [];
     final selected = widget.verses.firstWhere(
       (v) {
-        final id = widget.translationId == 'ESV'
+        final id = widget.translationId == 'bba9f40183526463-01'
             ? "${widget.chapterId}:${v['id']}"
             : v['id'];
         return id == selectedVerseId;
@@ -85,7 +85,8 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
     final settingsProvider = Provider.of<SettingsProvider>(context);
     final verseProvider = Provider.of<VerseProvider>(context);
 
-    final isESV = settingsProvider.currentTranslationId == 'ESV';
+    final isESV =
+        settingsProvider.currentTranslationId == 'bba9f40183526463-01';
 
     // final versesWithCopyright = List<Map<String, dynamic>>.from(widget.verses);
     final versesWithCopyright = List<Map<String, dynamic>>.from(widget.verses);
@@ -136,7 +137,7 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
           return const SizedBox.shrink();
         }
 
-        final fullId = widget.translationId == 'ESV'
+        final fullId = widget.translationId == 'bba9f40183526463-01'
             ? "${widget.chapterId}:$verseId"
             : verseId;
 
