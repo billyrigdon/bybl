@@ -26,9 +26,9 @@ class _ChurchScreenState extends State<ChurchScreen> {
     return Consumer<ChurchProvider>(
       builder: (context, churchProvider, child) {
         // If user is a member, show their church details
-        if (churchProvider.isMember && churchProvider.selectedChurch != null) {
-          return const ChurchDetailScreen();
-        }
+        // if (churchProvider.isMember && churchProvider.selectedChurch != null) {
+        // return const ChurchDetailScreen();
+        // }
 
         final theme = Theme.of(context);
         final backgroundColor = theme.brightness == Brightness.light

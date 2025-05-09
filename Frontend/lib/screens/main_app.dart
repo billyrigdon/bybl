@@ -146,7 +146,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
         _timer?.cancel();
         return;
       }
-
+ 
       NotificationProvider notificationProvider =
           Provider.of<NotificationProvider>(context, listen: false);
       await notificationProvider.fetchAllNotifications();
@@ -405,7 +405,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     BottomNavigationBarItem(
                       // 0 – Churches
                       icon: Icon(Icons.church, color: fontColor),
-                      label: churchProvider.isMember ? 'My Church' : 'Churches',
+                      label: 'Churches',
                     ),
                     BottomNavigationBarItem(
                       // 1 – Explore
@@ -439,23 +439,23 @@ class _MainAppScreenState extends State<MainAppScreen> {
                   onTap: (index) async {
                     if (index == 0) {
                       // Church tab
-                      if (churchProvider.isMember &&
-                          churchProvider.userChurchId != null) {
-                        // If user is a member, navigate to their church details
-                        await churchProvider
-                            .selectChurch(churchProvider.userChurchId!);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ChurchDetailScreen(),
-                          ),
-                        );
-                      } else {
-                        // If not a member, show church list
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      }
+                      // if (churchProvider.isMember &&
+                      //     churchProvider.userChurchId != null) {
+                      //   // If user is a member, navigate to their church details
+                      //   await churchProvider
+                      //       .selectChurch(churchProvider.userChurchId!);
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const ChurchDetailScreen(),
+                      //     ),
+                      //   );
+                      // } else {
+                      // If not a member, show church list
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                      // }
                     } else {
                       setState(() {
                         _currentIndex = index;

@@ -35,7 +35,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     _searchController = TextEditingController(
         text: settingsProvider.currentTranslationName ?? '');
-    _filteredTranslations = bibleProvider.translations;
+    // _filteredTranslations = bibleProvider.translations;
+    _filteredTranslations =
+        _groupAndSortTranslations(bibleProvider.translations);
 
     _searchController
         .addListener(() => _filterTranslations(_searchController.text));
@@ -85,7 +87,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
             all.firstWhere((t) => t['id'] == currentId, orElse: () => {});
         if (current.isNotEmpty) _filteredTranslations.insert(0, current);
       }
+      _filteredTranslations = _groupAndSortTranslations(scored);
     });
+  }
+
+  List<Map<String, dynamic>> _groupAndSortTranslations(
+      List<dynamic> translations) {
+    // Group by language
+    List<Map<String, dynamic>> english = [];
+    Map<String, List<Map<String, dynamic>>> others = {};
+
+    for (var t in translations) {
+      final lang = (t['language']?['name'] ?? '').toString();
+      if (lang.toLowerCase() == 'english') {
+        english.add(t);
+      } else {
+        others.putIfAbsent(lang, () => []).add(t);
+      }
+    }
+
+    // Sort each group
+    english.sort((a, b) => a['name'].compareTo(b['name']));
+    for (var group in others.values) {
+      group.sort((a, b) => a['name'].compareTo(b['name']));
+    }
+
+    // Combine with English at top, then others sorted by language
+    final sortedLanguages = others.keys.toList()..sort();
+    final result = [...english];
+    for (var lang in sortedLanguages) {
+      result.addAll(others[lang]!);
+    }
+
+    return result;
   }
 
   void _queueSave() {
@@ -99,10 +133,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  // String _buildDisplayName(Map t) {
+  //   final name = t['name']?.toString() ?? '';
+  //   final lang = t['language']?['name']?.toString() ?? '';
+  //   return lang.isEmpty ? name : '$name ($lang)';
+  // }
+
   String _buildDisplayName(Map t) {
     final name = t['name']?.toString() ?? '';
     final lang = t['language']?['name']?.toString() ?? '';
-    return lang.isEmpty ? name : '$name ($lang)';
+    return (lang.toLowerCase() == 'english' || lang.isEmpty)
+        ? name
+        : '$name ($lang)';
   }
 
   Future<void> _deleteAccount() async {

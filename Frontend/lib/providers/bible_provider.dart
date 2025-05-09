@@ -28,12 +28,23 @@ class BibleProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      _translations = data['data'];
+      final seenNames = <String>{};
+      _translations = [];
+
+      for (var t in data['data']) {
+        final name = t['name'];
+        if (!seenNames.contains(name)) {
+          seenNames.add(name);
+          _translations.add(t);
+        }
+      }
+
       notifyListeners();
     } else {
       throw Exception('Failed to load translations');
     }
   }
+
 
   Future<void> fetchBooks(String translationId) async {
     isLoadingBooks = true;
