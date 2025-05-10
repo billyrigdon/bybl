@@ -260,6 +260,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                                         contentPadding:
                                             const EdgeInsets.all(12),
                                         title: Text(bookmark['chapter_name']),
+                                        subtitle:
+                                            Text(bookmark['translation_name']),
                                         trailing: IconButton(
                                           icon: const Icon(Icons.delete,
                                               color: Colors.redAccent),
