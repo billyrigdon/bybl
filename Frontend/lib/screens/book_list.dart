@@ -101,28 +101,33 @@ class BookListScreen extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (_) => ReaderScreen(
-                                              bookName: bookName,
-                                              chapterId: chapter['id'],
-                                              chapterName:
-                                                  'Chapter ${chapter['number']}',
-                                              chapterIds: bibleProvider
-                                                  .getChapters(bookId)!
-                                                  .map((c) => c['id'])
-                                                  .toList(),
-                                              chapterNames: bibleProvider
-                                                  .getChapters(bookId)!
-                                                  .map((c) =>
-                                                      'Chapter ${c['number']}')
-                                              
-                                                  .toList(),
-                                                  //TODO: Properly handle errors here
-                                              translationName: Provider.of<SettingsProvider>(context, listen: false).currentTranslationName ?? '',
-                                              translationId: Provider.of<
-                                                            SettingsProvider>(
-                                                              context,
-                                                        listen: false)
-                                                    .currentTranslationId ?? ''
-                                            ),
+                                                bookName: bookName,
+                                                bookId: bookId,
+                                                chapterId: chapter['id'],
+                                                chapterName:
+                                                    'Chapter ${chapter['number']}',
+                                                chapterIds: bibleProvider
+                                                    .getChapters(bookId)!
+                                                    .map((c) => c['id'])
+                                                    .toList(),
+                                                chapterNames: bibleProvider
+                                                    .getChapters(bookId)!
+                                                    .map((c) =>
+                                                        'Chapter ${c['number']}')
+                                                    .toList(),
+                                                //TODO: Properly handle errors here
+                                                translationName: Provider.of<
+                                                                SettingsProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .currentTranslationName ??
+                                                    '',
+                                                translationId: Provider.of<
+                                                                SettingsProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .currentTranslationId ??
+                                                    ''),
                                           ),
                                         );
                                       },

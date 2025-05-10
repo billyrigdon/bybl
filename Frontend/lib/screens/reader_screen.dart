@@ -19,10 +19,11 @@ class ReaderScreen extends StatefulWidget {
   String chapterId;
   final String chapterName;
   final List<dynamic> chapterIds;
-  final List<String> chapterNames;
+  final List<dynamic> chapterNames;
   final String bookName;
   final String translationName;
   final String translationId;
+  final String bookId;
 
   ReaderScreen(
       {required this.chapterId,
@@ -31,7 +32,8 @@ class ReaderScreen extends StatefulWidget {
       required this.chapterNames,
       required this.bookName,
       required this.translationName,
-      required this.translationId});
+      required this.translationId,
+      required this.bookId});
 
   @override
   ReaderScreenState createState() => ReaderScreenState();
@@ -459,8 +461,8 @@ class ReaderScreenState extends State<ReaderScreen> {
   }
 
   Future<void> _preloadAdjacentChapters(String chapterId) async {
-    print('preload-----------------------');
-    if (_lastPreloadedChapterId == chapterId) return;
+    // print('preload-----------------------');
+    // if (_lastPreloadedChapterId == chapterId) return;
     _lastPreloadedChapterId = chapterId;
 
     final index = widget.chapterIds.indexOf(chapterId);
@@ -755,6 +757,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                                   "chapter_name": chapterName,
                                   "translation_name": widget.translationName,
                                   "translation_id": widget.translationId,
+                                  "book_id": widget.bookId
                                 }),
                               );
 

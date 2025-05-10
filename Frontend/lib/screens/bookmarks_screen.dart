@@ -114,7 +114,6 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   Map<String, List<dynamic>> groupedBookmarks = {};
   bool _isLoading = false;
   String? _token;
-  List<dynamic> chapters = [];
   @override
   void initState() {
     super.initState();
@@ -157,18 +156,18 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     setState(() => _isLoading = false);
   }
 
-  Future<List<dynamic>> fetchChapters(
-      String translationId, String bookId) async {
+  Future<dynamic> fetchChapters(String translationId, String bookId) async {
     try {
       final response = await http.get(
         Uri.parse(
-            'api.bybl.dev/api/bible/${translationId}/books/$bookId/chapters'),
+            'https://api.bybl.dev/api/bible/${translationId}/books/$bookId/chapters'),
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        List<dynamic> incomingChapters = data['data'];
-        chapters = chapters.where((c) => c['number'] != 'intro').toList();
+        var incomingChapters = data['data'];
+        var chapters =
+            incomingChapters.where((c) => c['number'] != 'intro').toList();
 
         return chapters;
       } else {
@@ -250,7 +249,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold)),
                                 ),
-                                ...entry.value.map((book) => Card(
+                                ...entry.value.map((bookmark) => Card(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 4),
                                       color: theme.cardColor.withOpacity(
@@ -260,24 +259,25 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                                       child: ListTile(
                                         contentPadding:
                                             const EdgeInsets.all(12),
-                                        title: Text(book['chapter_name']),
+                                        title: Text(bookmark['chapter_name']),
                                         trailing: IconButton(
                                           icon: const Icon(Icons.delete,
                                               color: Colors.redAccent),
                                           onPressed: () => _deleteBookmark(
-                                              book['bookmark_id']),
+                                              bookmark['bookmark_id']),
                                         ),
                                         onTap: () async {
-                                          List<dynamic> chapters =
-                                              await fetchChapters(
-                                                  book['translation_id'],
-                                                  book['book_id']);
+                                          var chapters = await fetchChapters(
+                                              bookmark['translation_id'],
+                                              bookmark['book_id']);
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (_) => ReaderScreen(
-                                                        chapterId:
-                                                            book['chapter_id'],
-                                                        chapterName: book[
+                                                        bookId:
+                                                            bookmark['book_id'],
+                                                        chapterId: bookmark[
+                                                            'chapter_id'],
+                                                        chapterName: bookmark[
                                                             'chapter_name'],
                                                         chapterIds: chapters
                                                             .map((c) => c['id'])
@@ -286,11 +286,11 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                                                             .map((c) =>
                                                                 'Chapter ${c['number']}')
                                                             .toList(),
-                                                        bookName:
-                                                            book['book_name'],
-                                                        translationId: book[
+                                                        bookName: bookmark[
+                                                            'book_name'],
+                                                        translationId: bookmark[
                                                             'translation_id'],
-                                                        translationName: book[
+                                                        translationName: bookmark[
                                                             'translation_name'],
                                                       )));
                                         },
