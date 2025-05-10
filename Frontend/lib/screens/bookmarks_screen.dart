@@ -257,6 +257,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                                                         ],
                                                         bookName:
                                                             b['book_name'],
+                                                            translationId: b['translation_id'],
+                                                            translationName: b['translation_name'],
                                                       )));
                                         },
                                       ),

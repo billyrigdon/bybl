@@ -113,7 +113,15 @@ class BookListScreen extends StatelessWidget {
                                                   .getChapters(bookId)!
                                                   .map((c) =>
                                                       'Chapter ${c['number']}')
+                                              
                                                   .toList(),
+                                                  //TODO: Properly handle errors here
+                                              translationName: Provider.of<SettingsProvider>(context, listen: false).currentTranslationName ?? '',
+                                              translationId: Provider.of<
+                                                            SettingsProvider>(
+                                                              context,
+                                                        listen: false)
+                                                    .currentTranslationId ?? ''
                                             ),
                                           ),
                                         );

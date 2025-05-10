@@ -21,14 +21,17 @@ class ReaderScreen extends StatefulWidget {
   final List<dynamic> chapterIds;
   final List<String> chapterNames;
   final String bookName;
+  final String translationName;
+  final String translationId;
 
-  ReaderScreen({
-    required this.chapterId,
-    required this.chapterName,
-    required this.chapterIds,
-    required this.chapterNames,
-    required this.bookName,
-  });
+  ReaderScreen(
+      {required this.chapterId,
+      required this.chapterName,
+      required this.chapterIds,
+      required this.chapterNames,
+      required this.bookName,
+      required this.translationName,
+      required this.translationId});
 
   @override
   ReaderScreenState createState() => ReaderScreenState();
@@ -111,7 +114,7 @@ class ReaderScreenState extends State<ReaderScreen> {
     print(chapterId);
     final settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
-    final translationId = settingsProvider.currentTranslationId ?? '';
+    final translationId = widget.translationId;
 
     if (_chapterContents.containsKey(chapterId)) {
       if (chapterId == widget.chapterId) {
@@ -637,8 +640,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                         key: isCurrent ? highlightKey : null,
                         chapterId: chapterId,
                         bookName: widget.bookName,
-                        translationId:
-                            settingsProvider.currentTranslationId ?? "",
+                        translationId: widget.translationId,
                         verses: verses,
                         style:
                             theme.textTheme.bodyMedium!.copyWith(fontSize: 20),
@@ -750,8 +752,8 @@ class ReaderScreenState extends State<ReaderScreen> {
                                   "chapter_id": widget.chapterId,
                                   "book_name": widget.bookName,
                                   "chapter_name": chapterName,
-                                  "translation_id":
-                                      settingsProvider.currentTranslationId,
+                                  "translation_name": widget.translationName,
+                                  "translation_id": widget.translationId,
                                 }),
                               );
 
