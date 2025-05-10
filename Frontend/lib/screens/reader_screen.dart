@@ -10,6 +10,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../providers/settings_provider.dart';
 import '../services/chat_service.dart';
@@ -683,20 +684,60 @@ class ReaderScreenState extends State<ReaderScreen> {
                         leading: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            // IconButton(
+                            //   iconSize: 24,
+                            //   padding: const EdgeInsets.only(left: 12),
+                            //   icon: const Icon(Icons.close),
+                            //   onPressed: () {
+                            //     setState(() => savedVersesActive = false);
+                            //     final currentIndex =
+                            //         widget.chapterIds.indexOf(widget.chapterId);
+                            //     if (_pageController.hasClients &&
+                            //         currentIndex !=
+                            //             _pageController.page?.round()) {
+                            //       _pageController.jumpToPage(currentIndex);
+                            //     }
+                            //   },
+                            // ),
                             IconButton(
-                              iconSize: 24,
-                              padding: const EdgeInsets.only(left: 12),
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                setState(() => savedVersesActive = false);
-                                final currentIndex =
-                                    widget.chapterIds.indexOf(widget.chapterId);
-                                if (_pageController.hasClients &&
-                                    currentIndex !=
-                                        _pageController.page?.round()) {
-                                  _pageController.jumpToPage(currentIndex);
+                              icon: const Icon(Icons.bookmark_add),
+                              onPressed: () async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                final token = prefs.getString('token');
+                                final settingsProvider =
+                                    Provider.of<SettingsProvider>(context,
+                                        listen: false);
+                                final response = await http.post(
+                                  Uri.parse(
+                                      'https://api.bybl.dev/api/bookmarks'),
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Bearer ${token}',
+                                  },
+                                  body: json.encode({
+                                    "chapter_id": widget.chapterId,
+                                    "book_name": widget.bookName,
+                                    "chapter_name": chapterName,
+                                    "translation_id":
+                                        settingsProvider.currentTranslationId,
+                                  }),
+                                );
+
+                                if (response.statusCode == 200) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Bookmark saved')),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Failed to save bookmark')),
+                                  );
                                 }
                               },
+                              tooltip: 'Bookmark',
                             ),
                           ],
                         ),
