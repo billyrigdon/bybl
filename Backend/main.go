@@ -179,6 +179,7 @@ func main() {
 
 	r.POST("/api/bookmarks", middleware.AuthMiddleware, handlers.CreateBookmark(db))
 	r.GET("/api/bookmarks", middleware.AuthMiddleware, handlers.GetBookmarks(db))
+	r.DELETE("/api/bookmarks/:id", middleware.AuthMiddleware, handlers.DeleteBookmark(db))
 
 	r.Run()
 }

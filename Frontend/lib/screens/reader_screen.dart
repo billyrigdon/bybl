@@ -699,46 +699,6 @@ class ReaderScreenState extends State<ReaderScreen> {
                             //     }
                             //   },
                             // ),
-                            IconButton(
-                              icon: const Icon(Icons.bookmark_add),
-                              onPressed: () async {
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                final token = prefs.getString('token');
-                                final settingsProvider =
-                                    Provider.of<SettingsProvider>(context,
-                                        listen: false);
-                                final response = await http.post(
-                                  Uri.parse(
-                                      'https://api.bybl.dev/api/bookmarks'),
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': 'Bearer ${token}',
-                                  },
-                                  body: json.encode({
-                                    "chapter_id": widget.chapterId,
-                                    "book_name": widget.bookName,
-                                    "chapter_name": chapterName,
-                                    "translation_id":
-                                        settingsProvider.currentTranslationId,
-                                  }),
-                                );
-
-                                if (response.statusCode == 200) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Bookmark saved')),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Failed to save bookmark')),
-                                  );
-                                }
-                              },
-                              tooltip: 'Bookmark',
-                            ),
                           ],
                         ),
                         automaticallyImplyLeading: false,
@@ -772,15 +732,46 @@ class ReaderScreenState extends State<ReaderScreen> {
                       children: [
                         if (settingsProvider.isLoggedIn)
                           IconButton(
-                            icon: const Icon(Icons.bookmark),
-                            onPressed: () {
-                              setState(
-                                  () => savedVersesActive = !savedVersesActive);
+                            icon: const Icon(Icons.bookmark_add),
+                            onPressed: () async {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              final token = prefs.getString('token');
+                              final settingsProvider =
+                                  Provider.of<SettingsProvider>(context,
+                                      listen: false);
+                              final response = await http.post(
+                                Uri.parse('https://api.bybl.dev/api/bookmarks'),
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': 'Bearer ${token}',
+                                },
+                                body: json.encode({
+                                  "chapter_id": widget.chapterId,
+                                  "book_name": widget.bookName,
+                                  "chapter_name": chapterName,
+                                  "translation_id":
+                                      settingsProvider.currentTranslationId,
+                                }),
+                              );
+
+                              if (response.statusCode == 200) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Bookmark saved')),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Failed to save bookmark')),
+                                );
+                              }
                             },
-                            tooltip: 'Saved',
+                            tooltip: 'Bookmark',
                           ),
                         if (settingsProvider.isLoggedIn)
-                          const Text('Saved', style: TextStyle(fontSize: 12)),
+                          const Text('Bookmark',
+                              style: TextStyle(fontSize: 12)),
                       ],
                     ),
 

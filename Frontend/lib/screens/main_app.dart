@@ -5,6 +5,7 @@ import 'package:TheWord/providers/bible_provider.dart';
 import 'package:TheWord/providers/friend_provider.dart';
 import 'package:TheWord/providers/notification_provider.dart';
 import 'package:TheWord/providers/verse_provider.dart';
+import 'package:TheWord/screens/bookmarks_screen.dart';
 import 'package:TheWord/screens/chat_screen.dart';
 import 'package:TheWord/screens/notification_screen.dart';
 import 'package:TheWord/screens/profile_screen.dart';
@@ -532,6 +533,18 @@ class _MainAppScreenState extends State<MainAppScreen> {
               ),
 
               if (settingsProvider.isLoggedIn) ...[
+                ListTile(
+                  leading: Icon(Icons.bookmarks),
+                  title: Text('Bookmarks'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const BookmarksScreen()),
+                    );
+                  },
+                ),
                 ListTile(
                   leading: Icon(Icons.person),
                   title: Text('Profile'),
