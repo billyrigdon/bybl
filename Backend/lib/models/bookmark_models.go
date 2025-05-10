@@ -8,5 +8,5 @@ type Bookmark struct {
 	ChapterName     string `json:"chapter_name"`
 	TranslationID   string `json:"translation_id"`
 	TranslationName string `json:"translation_name"`
-	bookID          string `json:"book_id"`
+	BookID          string `json:"book_id"`
 }
