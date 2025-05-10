@@ -71,7 +71,7 @@ class ReaderScreenState extends State<ReaderScreen> {
   @override
   void initState() {
     super.initState();
-
+    print('init------------------');
     chapterName = widget.chapterName;
 
     _pageController = PageController(
@@ -112,8 +112,8 @@ class ReaderScreenState extends State<ReaderScreen> {
   Future<void> _fetchChapterContent(String chapterId,
       {bool showLoading = true}) async {
     print(chapterId);
-    final settingsProvider =
-        Provider.of<SettingsProvider>(context, listen: false);
+    // final settingsProvider =
+    // Provider.of<SettingsProvider>(context, listen: false);
     final translationId = widget.translationId;
 
     if (_chapterContents.containsKey(chapterId)) {
@@ -459,6 +459,7 @@ class ReaderScreenState extends State<ReaderScreen> {
   }
 
   Future<void> _preloadAdjacentChapters(String chapterId) async {
+    print('preload-----------------------');
     if (_lastPreloadedChapterId == chapterId) return;
     _lastPreloadedChapterId = chapterId;
 

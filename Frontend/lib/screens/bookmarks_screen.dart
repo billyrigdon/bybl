@@ -94,7 +94,10 @@
 //   }
 // }
 import 'dart:convert';
+import 'package:TheWord/providers/bible_provider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -111,7 +114,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   Map<String, List<dynamic>> groupedBookmarks = {};
   bool _isLoading = false;
   String? _token;
-
+  List<dynamic> chapters = [];
   @override
   void initState() {
     super.initState();
@@ -152,6 +155,29 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     }
 
     setState(() => _isLoading = false);
+  }
+
+  Future<List<dynamic>> fetchChapters(
+      String translationId, String bookId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'api.bybl.dev/api/bible/${translationId}/books/$bookId/chapters'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        List<dynamic> incomingChapters = data['data'];
+        chapters = chapters.where((c) => c['number'] != 'intro').toList();
+
+        return chapters;
+      } else {
+        throw Exception('Failed to load chapters');
+      }
+    } catch (e, stack) {
+      FirebaseCrashlytics.instance.recordError(e, stack);
+      return [];
+    }
   }
 
   Map<String, List<dynamic>> _groupAndSort(List<dynamic> bookmarks) {
@@ -224,7 +250,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold)),
                                 ),
-                                ...entry.value.map((b) => Card(
+                                ...entry.value.map((book) => Card(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 4),
                                       color: theme.cardColor.withOpacity(
@@ -234,31 +260,38 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                                       child: ListTile(
                                         contentPadding:
                                             const EdgeInsets.all(12),
-                                        title: Text(b['chapter_name']),
+                                        title: Text(book['chapter_name']),
                                         trailing: IconButton(
                                           icon: const Icon(Icons.delete,
                                               color: Colors.redAccent),
-                                          onPressed: () =>
-                                              _deleteBookmark(b['bookmark_id']),
+                                          onPressed: () => _deleteBookmark(
+                                              book['bookmark_id']),
                                         ),
-                                        onTap: () {
+                                        onTap: () async {
+                                          List<dynamic> chapters =
+                                              await fetchChapters(
+                                                  book['translation_id'],
+                                                  book['book_id']);
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (_) => ReaderScreen(
                                                         chapterId:
-                                                            b['chapter_id'],
-                                                        chapterName:
-                                                            b['chapter_name'],
-                                                        chapterIds: [
-                                                          b['chapter_id']
-                                                        ],
-                                                        chapterNames: [
-                                                          b['chapter_name']
-                                                        ],
+                                                            book['chapter_id'],
+                                                        chapterName: book[
+                                                            'chapter_name'],
+                                                        chapterIds: chapters
+                                                            .map((c) => c['id'])
+                                                            .toList(),
+                                                        chapterNames: chapters
+                                                            .map((c) =>
+                                                                'Chapter ${c['number']}')
+                                                            .toList(),
                                                         bookName:
-                                                            b['book_name'],
-                                                            translationId: b['translation_id'],
-                                                            translationName: b['translation_name'],
+                                                            book['book_name'],
+                                                        translationId: book[
+                                                            'translation_id'],
+                                                        translationName: book[
+                                                            'translation_name'],
                                                       )));
                                         },
                                       ),
