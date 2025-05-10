@@ -96,7 +96,7 @@ class _PublicVersesScreenState extends State<PublicVersesScreen>
                           return VerseCard(
                               verseId: currentVerse['VerseID'],
                               verseContent: currentVerse['Content'],
-                              username: currentVerse['username'] ?? '',
+                              username: currentVerse['Username'] ?? '',
                               note: currentVerse['Note'] ?? '',
                               isPublished: true,
                               likesCount:

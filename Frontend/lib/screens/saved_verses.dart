@@ -61,7 +61,6 @@ class _SavedVersesScreenState extends State<SavedVersesScreen> {
                       final verse = verseProvider.savedVerses[index];
                       int userVerseId = verse['UserVerseID'];
                       bool isPublished = verse['is_published'] ?? false;
-
                       return Dismissible(
                         key: Key(verse['VerseID'].toString()),
                         direction: DismissDirection.endToStart,

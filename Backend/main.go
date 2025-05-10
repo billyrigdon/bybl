@@ -36,7 +36,7 @@ func main() {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
 
-	db.AutoMigrate(&models.User{}, &models.UserVerse{}, &models.Like{}, &models.Comment{}, &models.Friend{}, &models.Notification{}, &models.Church{}, &models.SmallGroup{}, &models.ChurchEvent{}, &models.Message{}, &models.PrayerRequest{}, &models.GroupMember{})
+	db.AutoMigrate(&models.Bookmark{}, &models.User{}, &models.UserVerse{}, &models.Like{}, &models.Comment{}, &models.Friend{}, &models.Notification{}, &models.Church{}, &models.SmallGroup{}, &models.ChurchEvent{}, &models.Message{}, &models.PrayerRequest{}, &models.GroupMember{})
 	log.Println("Database tables created or already exist.")
 
 	// Seed the database with initial data
@@ -176,6 +176,9 @@ func main() {
 	r.POST("/api/churches/:id/avatar", middleware.AuthMiddleware, handlers.UploadChurchAvatarHandler(db))
 	r.POST("/api/groups/:id/avatar", middleware.AuthMiddleware, handlers.UploadSmallGroupAvatarHandler(db))
 	r.GET("/api/avatar", handlers.GetAvatarHandler(db))
+
+	r.POST("/api/bookmarks", middleware.AuthMiddleware, handlers.CreateBookmark(db))
+	r.GET("/api/bookmarks", middleware.AuthMiddleware, handlers.GetBookmarks(db))
 
 	r.Run()
 }

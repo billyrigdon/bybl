@@ -19,5 +19,5 @@ type UserVerseWithMeta struct {
 	UserID       uint   `json:"user_id"`
 	LikesCount   int    `json:"likes_count"`
 	CommentCount int    `json:"comment_count"`
-	Username     string `json:"username,omitempty"`
+	Username     string `json:"username"`
 }

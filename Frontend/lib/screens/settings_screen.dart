@@ -111,7 +111,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final isEnglish = langName == 'english' ||
           langName.isEmpty ||
           t['language']?['id'] == 'eng' ||
-          ['bba9f40183526463-01', 'niv', 'nkjv', 'nlt', 'nasb', 'net', 'csb']
+          ['esv', 'niv', 'nkjv', 'nlt', 'nasb', 'net', 'csb']
               .any((key) => name.contains(key));
 
       if (isEnglish) {

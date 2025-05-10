@@ -47,7 +47,7 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
     String translationId,
   ) async {
     String savedVerseId = verseId;
-    if (translationId == 'bba9f40183526463-01') {
+    if (translationId == 'ESV') {
       savedVerseId = "$chapter:$verseId";
     }
 
@@ -70,7 +70,7 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
     if (selectedVerseId == null) return [];
     final selected = widget.verses.firstWhere(
       (v) {
-        final id = widget.translationId == 'bba9f40183526463-01'
+        final id = widget.translationId == 'esv'
             ? "${widget.chapterId}:${v['id']}"
             : v['id'];
         return id == selectedVerseId;
@@ -85,29 +85,29 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
     final settingsProvider = Provider.of<SettingsProvider>(context);
     final verseProvider = Provider.of<VerseProvider>(context);
 
-    final isESV =
-        settingsProvider.currentTranslationId == 'bba9f40183526463-01';
+    // final isESV =
+    // settingsProvider.currentTranslationId == 'bba9f40183526463-01';
 
     // final versesWithCopyright = List<Map<String, dynamic>>.from(widget.verses);
     final versesWithCopyright = List<Map<String, dynamic>>.from(widget.verses);
 
 // Remove "(ESV)" from last verse if present
-    if (isESV && versesWithCopyright.isNotEmpty) {
-      final lastVerse = versesWithCopyright.last;
-      if (lastVerse['text'] is String) {
-        lastVerse['text'] =
-            lastVerse['text'].replaceAll(RegExp(r'\s*\(ESV\)\s*$'), '');
-      }
-    }
+    // if (isESV && versesWithCopyright.isNotEmpty) {
+    // final lastVerse = versesWithCopyright.last;
+    // if (lastVerse['text'] is String) {
+    // lastVerse['text'] =
+    // lastVerse['text'].replaceAll(RegExp(r'\s*\(ESV\)\s*$'), '');
+    // }
+    // }
 
-    if (isESV && widget.verses.isNotEmpty) {
-      versesWithCopyright.add({
-        'id': 'copyright',
-        'text': 'Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, '
-            'a publishing ministry of Good News Publishers. Used by permission. All rights reserved...',
-        'isCopyright': true,
-      });
-    }
+    // if (isESV && widget.verses.isNotEmpty) {
+    //   versesWithCopyright.add({
+    //     'id': 'copyright',
+    //     'text': 'Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, '
+    //         'a publishing ministry of Good News Publishers. Used by permission. All rights reserved...',
+    //     'isCopyright': true,
+    //   });
+    // }
 
     return ListView.builder(
       key: PageStorageKey(widget.chapterId),
@@ -137,14 +137,14 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
           return const SizedBox.shrink();
         }
 
-        final fullId = widget.translationId == 'bba9f40183526463-01'
-            ? "${widget.chapterId}:$verseId"
-            : verseId;
+        // final fullId = widget.translationId == 'bba9f40183526463-01'
+        // ? "${widget.chapterId}:$verseId"
+        // : verseId;
 
         // final isSelected = selectedVerseIds.contains(fullId);
-        final isSelected = selectedVerseId == fullId;
+        final isSelected = selectedVerseId == verseId;
 
-        final isHighlighted = verseProvider.isVerseSaved(fullId);
+        final isHighlighted = verseProvider.isVerseSaved(verseId);
         final isCurrentVerse = (widget.currentVerseIndex == index);
 
         final highlightColor = isHighlighted
@@ -231,12 +231,12 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
                             ..onTap = () {
                               if (widget.loggedIn) {
                                 setState(() {
-                                  if (selectedVerseId == fullId) {
+                                  if (selectedVerseId == verseId) {
                                     selectedVerseId = null;
                                     _activeTooltipVerseId = null;
                                   } else {
-                                    selectedVerseId = fullId;
-                                    _activeTooltipVerseId = fullId;
+                                    selectedVerseId = verseId;
+                                    _activeTooltipVerseId = verseId;
                                   }
                                 });
                               }
@@ -303,7 +303,7 @@ class SelectableTextHighlightState extends State<SelectableTextHighlight> {
             ),
 
             // Tooltip for selected verse
-            if (_activeTooltipVerseId == fullId)
+            if (_activeTooltipVerseId == verseId)
               Positioned(
                 right: 12,
                 top: 0,
